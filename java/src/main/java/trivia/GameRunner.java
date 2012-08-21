@@ -19,6 +19,10 @@ public class GameRunner {
         aGame.add("Pat");
         aGame.add("Sue");
 
+        runConfiguredGame(rand, aGame);
+    }
+
+    public static void runConfiguredGame(Random rand, Game aGame) {
         do {
             aGame.roll(rand.nextInt(5) + 1);
 

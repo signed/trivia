@@ -13,20 +13,30 @@ import java.io.PrintStream;
 import java.util.Random;
 
 public class TestSandbox {
+
+    private static interface GameInvoker{
+        void runGame(Random random, Game game);
+    }
+
+
     private final PrintStream originalSystemOut = System.out;
 
+    public GameLog runPreConfigured(Game game) {
+        return runGame(new Random(25), game, new VanillaGameInvoker());
+    }
+
     public GameLog runLegacyGame(Random random) {
-        return runGame(random, new LegacyGame());
+        return runGame(random, new LegacyGame(), new JoinThreePlayer());
     }
 
     public GameLog runRewrittenGame(Random random){
-        return runGame(random, new RewrittenGame());
+        return runGame(random, new RewrittenGame(), new JoinThreePlayer());
     }
 
-    private GameLog runGame(Random random, Game aGame) {
+    private GameLog runGame(Random random, Game aGame, GameInvoker invoker) {
         try {
             ByteArrayOutputStream data = replaceSystemOut();
-            GameRunner.runWith(random, aGame);
+            invoker.runGame(random, aGame);
             String consoleLog = restoreSystemOut(data);
             return new GameLog(consoleLog);
         } finally {
@@ -52,5 +62,21 @@ public class TestSandbox {
         PrintStream mockOut = new PrintStream(data);
         System.setOut(mockOut);
         return data;
+    }
+
+    private static class JoinThreePlayer implements GameInvoker {
+
+        @Override
+        public void runGame(Random random, Game game) {
+            GameRunner.runWith(random, game);
+
+        }
+    }
+
+    private static class VanillaGameInvoker implements GameInvoker {
+        @Override
+        public void runGame(Random random, Game game) {
+            GameRunner.runConfiguredGame(random, game);
+        }
     }
 }
