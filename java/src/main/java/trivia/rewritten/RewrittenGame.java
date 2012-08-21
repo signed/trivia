@@ -4,27 +4,28 @@ import trivia.legacy.Game;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class RewrittenGame implements Game {
-    ArrayList players = new ArrayList();
+    ArrayList<String> players = new ArrayList<String>();
     int[] places = new int[6];
     int[] purses = new int[6];
     boolean[] inPenaltyBox = new boolean[6];
 
-    LinkedList popQuestions = new LinkedList();
-    LinkedList scienceQuestions = new LinkedList();
-    LinkedList sportsQuestions = new LinkedList();
-    LinkedList rockQuestions = new LinkedList();
+    List<String> popQuestions = new LinkedList<String>();
+    List<String> scienceQuestions = new LinkedList<String>();
+    List<String> sportsQuestions = new LinkedList<String>();
+    List<String> rockQuestions = new LinkedList<String>();
 
     int currentPlayer = 0;
     boolean isGettingOutOfPenaltyBox;
 
     public RewrittenGame() {
         for (int i = 0; i < 50; i++) {
-            popQuestions.addLast("Pop Question " + i);
-            scienceQuestions.addLast(("Science Question " + i));
-            sportsQuestions.addLast(("Sports Question " + i));
-            rockQuestions.addLast(createRockQuestion(i));
+            popQuestions.add("Pop Question " + i);
+            scienceQuestions.add(("Science Question " + i));
+            sportsQuestions.add(("Sports Question " + i));
+            rockQuestions.add(createRockQuestion(i));
         }
     }
 
@@ -38,8 +39,6 @@ public class RewrittenGame implements Game {
 
     @Override
     public boolean add(String playerName) {
-
-
         players.add(playerName);
         places[howManyPlayers()] = 0;
         purses[howManyPlayers()] = 0;
@@ -92,14 +91,14 @@ public class RewrittenGame implements Game {
     }
 
     private void askQuestion() {
-        if (currentCategory() == "Pop")
-            System.out.println(popQuestions.removeFirst());
-        if (currentCategory() == "Science")
-            System.out.println(scienceQuestions.removeFirst());
-        if (currentCategory() == "Sports")
-            System.out.println(sportsQuestions.removeFirst());
-        if (currentCategory() == "Rock")
-            System.out.println(rockQuestions.removeFirst());
+        if ("Pop".equals(currentCategory()))
+            System.out.println(popQuestions.remove(0));
+        if ("Science".equals(currentCategory()))
+            System.out.println(scienceQuestions.remove(0));
+        if ("Sports".equals(currentCategory()))
+            System.out.println(sportsQuestions.remove(0));
+        if ("Rock".equals(currentCategory()))
+            System.out.println(rockQuestions.remove(0));
     }
 
 
