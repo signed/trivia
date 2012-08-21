@@ -1,6 +1,9 @@
 package trivia;
 
 import com.google.common.io.CharStreams;
+import trivia.legacy.Game;
+import trivia.legacy.LegacyGame;
+import trivia.rewritten.RewrittenGame;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -12,10 +15,18 @@ import java.util.Random;
 public class TestSandbox {
     private final PrintStream originalSystemOut = System.out;
 
-    public GameLog runGameWith(Random random) {
+    public GameLog runLegacyGame(Random random) {
+        return runGame(random, new LegacyGame());
+    }
+
+    public GameLog runRewrittenGame(Random random){
+        return runGame(random, new RewrittenGame());
+    }
+
+    private GameLog runGame(Random random, Game aGame) {
         try {
             ByteArrayOutputStream data = replaceSystemOut();
-            GameRunner.runWith(random);
+            GameRunner.runWith(random, aGame);
             String consoleLog = restoreSystemOut(data);
             return new GameLog(consoleLog);
         } finally {

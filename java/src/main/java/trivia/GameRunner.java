@@ -1,6 +1,7 @@
 package trivia;
 
 import trivia.legacy.Game;
+import trivia.legacy.LegacyGame;
 
 import java.util.Random;
 
@@ -10,12 +11,10 @@ public class GameRunner {
     private static boolean notAWinner;
 
     public static void main(String[] args) {
-        Random rand = new Random();
-        runWith(rand);
+        runWith(new Random(), new LegacyGame());
     }
 
-    public static void runWith(Random rand) {
-        Game aGame = new Game();
+    public static void runWith(Random rand, Game aGame) {
         aGame.add("Chet");
         aGame.add("Pat");
         aGame.add("Sue");
