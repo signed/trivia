@@ -7,18 +7,18 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class RewrittenGame implements Game {
-    ArrayList<String> players = new ArrayList<String>();
-    int[] places = new int[6];
-    int[] purses = new int[6];
-    boolean[] inPenaltyBox = new boolean[6];
+    private final ArrayList<String> players = new ArrayList<String>();
+    private final int[] places = new int[6];
+    private final int[] purses = new int[6];
+    private final boolean[] inPenaltyBox = new boolean[6];
 
-    List<String> popQuestions = new LinkedList<String>();
-    List<String> scienceQuestions = new LinkedList<String>();
-    List<String> sportsQuestions = new LinkedList<String>();
-    List<String> rockQuestions = new LinkedList<String>();
+    private final List<String> popQuestions = new LinkedList<String>();
+    private final List<String> scienceQuestions = new LinkedList<String>();
+    private final List<String> sportsQuestions = new LinkedList<String>();
+    private final List<String> rockQuestions = new LinkedList<String>();
 
-    int currentPlayer = 0;
-    boolean isGettingOutOfPenaltyBox;
+    private int currentPlayer = 0;
+    private boolean isGettingOutOfPenaltyBox;
 
     public RewrittenGame() {
         for (int i = 0; i < 50; i++) {
@@ -136,10 +136,7 @@ public class RewrittenGame implements Game {
                 if (currentPlayer == players.size()) currentPlayer = 0;
                 return true;
             }
-
-
         } else {
-
             System.out.println("Answer was corrent!!!!");
             purses[currentPlayer]++;
             System.out.println(players.get(currentPlayer)
