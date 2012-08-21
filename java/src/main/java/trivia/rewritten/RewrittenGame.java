@@ -7,10 +7,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class RewrittenGame implements Game {
-    private final ArrayList<String> players = new ArrayList<String>();
+    private final List<String> players = new ArrayList<String>();
+    private final boolean[] inPenaltyBox = new boolean[6];
     private final int[] places = new int[6];
     private final int[] purses = new int[6];
-    private final boolean[] inPenaltyBox = new boolean[6];
 
     private final List<String> popQuestions = new LinkedList<String>();
     private final List<String> scienceQuestions = new LinkedList<String>();
@@ -63,12 +63,12 @@ public class RewrittenGame implements Game {
                 isGettingOutOfPenaltyBox = true;
 
                 System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
-                places[currentPlayer] = places[currentPlayer] + roll;
-                if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+                places[currentPlayer] = currentPlayersLocationOnBoard() + roll;
+                if (currentPlayersLocationOnBoard() > 11) places[currentPlayer] = currentPlayersLocationOnBoard() - 12;
 
                 System.out.println(players.get(currentPlayer)
                         + "'s new location is "
-                        + places[currentPlayer]);
+                        + currentPlayersLocationOnBoard());
                 System.out.println("The category is " + currentCategory());
                 askQuestion();
             } else {
@@ -78,12 +78,12 @@ public class RewrittenGame implements Game {
 
         } else {
 
-            places[currentPlayer] = places[currentPlayer] + roll;
-            if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+            places[currentPlayer] = currentPlayersLocationOnBoard() + roll;
+            if (currentPlayersLocationOnBoard() > 11) places[currentPlayer] = currentPlayersLocationOnBoard() - 12;
 
             System.out.println(players.get(currentPlayer)
                     + "'s new location is "
-                    + places[currentPlayer]);
+                    + currentPlayersLocationOnBoard());
             System.out.println("The category is " + currentCategory());
             askQuestion();
         }
@@ -103,16 +103,20 @@ public class RewrittenGame implements Game {
 
 
     private String currentCategory() {
-        if (places[currentPlayer] == 0) return "Pop";
-        if (places[currentPlayer] == 4) return "Pop";
-        if (places[currentPlayer] == 8) return "Pop";
-        if (places[currentPlayer] == 1) return "Science";
-        if (places[currentPlayer] == 5) return "Science";
-        if (places[currentPlayer] == 9) return "Science";
-        if (places[currentPlayer] == 2) return "Sports";
-        if (places[currentPlayer] == 6) return "Sports";
-        if (places[currentPlayer] == 10) return "Sports";
+        if (currentPlayersLocationOnBoard() == 0) return "Pop";
+        if (currentPlayersLocationOnBoard() == 1) return "Science";
+        if (currentPlayersLocationOnBoard() == 2) return "Sports";
+        if (currentPlayersLocationOnBoard() == 4) return "Pop";
+        if (currentPlayersLocationOnBoard() == 5) return "Science";
+        if (currentPlayersLocationOnBoard() == 6) return "Sports";
+        if (currentPlayersLocationOnBoard() == 8) return "Pop";
+        if (currentPlayersLocationOnBoard() == 9) return "Science";
+        if (currentPlayersLocationOnBoard() == 10) return "Sports";
         return "Rock";
+    }
+
+    private int currentPlayersLocationOnBoard() {
+        return places[currentPlayer];
     }
 
     @Override
