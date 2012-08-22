@@ -7,7 +7,6 @@ public class LegacyGame_AGameWithNoPlayersTest {
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void canNotBePlayed() throws Exception {
-        Game game = new LegacyGame();
-        new TestSandbox().runPreConfigured(game);
+        new GameRemote().rollSixSidedDiceAndProgressOnBoard();
     }
 }

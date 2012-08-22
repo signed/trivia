@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
 
 public class LegacyGame_InAGameWithTimAndSarahTest {
     private final GameRemote gameRemote = new GameRemote();
@@ -18,16 +19,15 @@ public class LegacyGame_InAGameWithTimAndSarahTest {
     public void timIsFirstInEachTurnBecauseHeJoinedFirst() throws Exception {
         gameRemote.rollSixSidedDiceAndProgressOnBoard();
 
-        assertThat(gameRemote.lastLog().log, containsString("Tim is the current player"));
+        assertThat(theCurrentPlayer(), containsString("Tim"));
     }
-
 
     @Test
     public void sarahIsSecondInEachTurnBecauseSheJoinedSecond() throws Exception {
         timCompletesHisFirstMove();
         gameRemote.rollSixSidedDiceAndProgressOnBoard();
 
-        assertThat(gameRemote.lastLog().log, containsString("Sarah is the current player"));
+        assertThat(theCurrentPlayer(), containsString("Sarah"));
     }
 
     @Test
@@ -36,7 +36,11 @@ public class LegacyGame_InAGameWithTimAndSarahTest {
         sarahCompletesHerFirstMove();
         gameRemote.rollSixSidedDiceAndProgressOnBoard();
 
-        assertThat(gameRemote.lastLog().log, containsString("Tim is the current player"));
+        assertThat(theCurrentPlayer(), is("Tim"));
+    }
+
+    private String theCurrentPlayer() {
+        return gameRemote.lastLog().nameOfCurrentPlayer();
     }
 
     private void sarahCompletesHerFirstMove() {
