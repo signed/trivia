@@ -20,7 +20,7 @@ public class LegacyGame implements Game {
     private final PrintStream out;
 
     public LegacyGame() {
-        this(System.out);
+        this(null);
     }
 
     public LegacyGame(PrintStream out){
@@ -95,7 +95,7 @@ public class LegacyGame implements Game {
     }
 
     private PrintStream getOut() {
-        return out;
+        return null != out? out: System.out;
     }
 
     private void askQuestion() {
