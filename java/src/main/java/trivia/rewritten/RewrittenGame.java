@@ -2,6 +2,7 @@ package trivia.rewritten;
 
 import trivia.legacy.Game;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,17 +17,23 @@ public class RewrittenGame implements Game {
     private final List<String> scienceQuestions = new LinkedList<String>();
     private final List<String> sportsQuestions = new LinkedList<String>();
     private final List<String> rockQuestions = new LinkedList<String>();
+    private final PrintStream out;
 
     private int currentPlayer = 0;
     private boolean isGettingOutOfPenaltyBox;
 
-    public RewrittenGame() {
+    public RewrittenGame(PrintStream out) {
+        this.out = out;
         for (int i = 0; i < 50; i++) {
             popQuestions.add("Pop Question " + i);
             scienceQuestions.add(("Science Question " + i));
             sportsQuestions.add(("Sports Question " + i));
             rockQuestions.add(createRockQuestion(i));
         }
+    }
+
+    public RewrittenGame() {
+        this(null);
     }
 
     public String createRockQuestion(int index) {
@@ -44,9 +51,13 @@ public class RewrittenGame implements Game {
         purses[howManyPlayers()] = 0;
         inPenaltyBox[howManyPlayers()] = false;
 
-        System.out.println(playerName + " was added");
-        System.out.println("They are player number " + players.size());
+        getOut().println(playerName + " was added");
+        getOut().println("They are player number " + players.size());
         return true;
+    }
+
+    private PrintStream getOut() {
+        return null != out ? out :System.out;
     }
 
     public int howManyPlayers() {
@@ -55,24 +66,24 @@ public class RewrittenGame implements Game {
 
     @Override
     public void roll(int roll) {
-        System.out.println(players.get(currentPlayer) + " is the current player");
-        System.out.println("They have rolled a " + roll);
+        getOut().println(players.get(currentPlayer) + " is the current player");
+        getOut().println("They have rolled a " + roll);
 
         if (inPenaltyBox[currentPlayer]) {
             if (roll % 2 != 0) {
                 isGettingOutOfPenaltyBox = true;
 
-                System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
+                getOut().println(players.get(currentPlayer) + " is getting out of the penalty box");
                 places[currentPlayer] = currentPlayersLocationOnBoard() + roll;
                 if (currentPlayersLocationOnBoard() > 11) places[currentPlayer] = currentPlayersLocationOnBoard() - 12;
 
-                System.out.println(players.get(currentPlayer)
+                getOut().println(players.get(currentPlayer)
                         + "'s new location is "
                         + currentPlayersLocationOnBoard());
-                System.out.println("The category is " + currentCategory());
+                getOut().println("The category is " + currentCategory());
                 askQuestion();
             } else {
-                System.out.println(players.get(currentPlayer) + " is not getting out of the penalty box");
+                getOut().println(players.get(currentPlayer) + " is not getting out of the penalty box");
                 isGettingOutOfPenaltyBox = false;
             }
 
@@ -81,10 +92,10 @@ public class RewrittenGame implements Game {
             places[currentPlayer] = currentPlayersLocationOnBoard() + roll;
             if (currentPlayersLocationOnBoard() > 11) places[currentPlayer] = currentPlayersLocationOnBoard() - 12;
 
-            System.out.println(players.get(currentPlayer)
+            getOut().println(players.get(currentPlayer)
                     + "'s new location is "
                     + currentPlayersLocationOnBoard());
-            System.out.println("The category is " + currentCategory());
+            getOut().println("The category is " + currentCategory());
             askQuestion();
         }
 
@@ -92,13 +103,13 @@ public class RewrittenGame implements Game {
 
     private void askQuestion() {
         if ("Pop".equals(currentCategory()))
-            System.out.println(popQuestions.remove(0));
+            getOut().println(popQuestions.remove(0));
         if ("Science".equals(currentCategory()))
-            System.out.println(scienceQuestions.remove(0));
+            getOut().println(scienceQuestions.remove(0));
         if ("Sports".equals(currentCategory()))
-            System.out.println(sportsQuestions.remove(0));
+            getOut().println(sportsQuestions.remove(0));
         if ("Rock".equals(currentCategory()))
-            System.out.println(rockQuestions.remove(0));
+            getOut().println(rockQuestions.remove(0));
     }
 
 
@@ -123,9 +134,9 @@ public class RewrittenGame implements Game {
     public boolean wasCorrectlyAnswered() {
         if (inPenaltyBox[currentPlayer]) {
             if (isGettingOutOfPenaltyBox) {
-                System.out.println("Answer was correct!!!!");
+                getOut().println("Answer was correct!!!!");
                 purses[currentPlayer]++;
-                System.out.println(players.get(currentPlayer)
+                getOut().println(players.get(currentPlayer)
                         + " now has "
                         + purses[currentPlayer]
                         + " Gold Coins.");
@@ -141,9 +152,9 @@ public class RewrittenGame implements Game {
                 return true;
             }
         } else {
-            System.out.println("Answer was corrent!!!!");
+            getOut().println("Answer was corrent!!!!");
             purses[currentPlayer]++;
-            System.out.println(players.get(currentPlayer)
+            getOut().println(players.get(currentPlayer)
                     + " now has "
                     + purses[currentPlayer]
                     + " Gold Coins.");
@@ -158,8 +169,8 @@ public class RewrittenGame implements Game {
 
     @Override
     public boolean wrongAnswer() {
-        System.out.println("Question was incorrectly answered");
-        System.out.println(players.get(currentPlayer) + " was sent to the penalty box");
+        getOut().println("Question was incorrectly answered");
+        getOut().println(players.get(currentPlayer) + " was sent to the penalty box");
         inPenaltyBox[currentPlayer] = true;
 
         currentPlayer++;
