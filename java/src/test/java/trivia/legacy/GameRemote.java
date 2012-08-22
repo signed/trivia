@@ -1,0 +1,44 @@
+package trivia.legacy;
+
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.io.CharStreams;
+import trivia.GameLog;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.util.List;
+
+public class GameRemote {
+    private final List<GameLog> logs = Lists.newArrayList();
+    private final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    private final LegacyGame game = new LegacyGame(new PrintStream(out));
+
+    public void addPlayer(String playerName) {
+        game.add(playerName);
+        processLoggedMesssages();
+    }
+
+    private void processLoggedMesssages() {
+        logs.add(createLogFromOutput());
+        out.reset();
+    }
+
+    public GameLog lastLog() {
+        return Iterables.getLast(logs);
+    }
+
+    private GameLog createLogFromOutput() {
+        try {
+            ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+            String log = null;
+            log = CharStreams.toString(new InputStreamReader(in, "UTF-8"));
+            return new GameLog(log);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
