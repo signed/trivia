@@ -12,7 +12,7 @@ public class LegacyGame_AGameWithTimTest {
 
     @Before
     public void timJoins() {
-        gameRemote.addPlayer("Tim");
+        gameRemote.addTimToTheGame();
     }
 
     @Test

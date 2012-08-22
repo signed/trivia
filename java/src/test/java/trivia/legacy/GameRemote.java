@@ -19,10 +19,10 @@ public class GameRemote {
 
     public void addPlayer(String playerName) {
         game.add(playerName);
-        processLoggedMesssages();
+        processLoggedText();
     }
 
-    private void processLoggedMesssages() {
+    private void processLoggedText() {
         logs.add(createLogFromOutput());
         out.reset();
     }
@@ -34,11 +34,24 @@ public class GameRemote {
     private GameLog createLogFromOutput() {
         try {
             ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
-            String log = null;
-            log = CharStreams.toString(new InputStreamReader(in, "UTF-8"));
+            String log = CharStreams.toString(new InputStreamReader(in, "UTF-8"));
             return new GameLog(log);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void addTimToTheGame() {
+        addPlayer("Tim");
+    }
+
+    public void rollSixSidedDiceAndProgressOnBoard() {
+        game.roll(2);
+        processLoggedText();
+    }
+
+    public void answerQuestionWrong() {
+        game.wrongAnswer();
+        processLoggedText();
     }
 }
