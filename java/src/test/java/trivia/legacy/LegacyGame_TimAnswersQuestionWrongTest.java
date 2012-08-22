@@ -13,7 +13,7 @@ public class LegacyGame_TimAnswersQuestionWrongTest {
     public void addTimToTheGameAndProgressUpToSixFieldsOnTheBoardAndAnswerTheQuestionWrong() throws Exception {
         remote.addTimToTheGame();
         remote.rollSixSidedDiceAndProgressOnBoard();
-        remote.answerQuestionWrong();
+        remote.answerTheQuestionWrong();
     }
 
     @Test

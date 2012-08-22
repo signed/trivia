@@ -50,8 +50,24 @@ public class GameRemote {
         processLoggedText();
     }
 
-    public void answerQuestionWrong() {
+    public void answerTheQuestionWrong() {
         game.wrongAnswer();
         processLoggedText();
+    }
+
+    public void addPlayersInOrder(String ... playerNames) {
+        for (String playerName : playerNames) {
+            addPlayer(playerName);
+        }
+    }
+
+    public void answerTheQuestionRightOrWrong() {
+        answerTheQuestionWrong();
+    }
+
+    public void dumpCompleteLog(){
+        for (GameLog log : logs) {
+            System.out.println(log.log);
+        }
     }
 }
