@@ -15,7 +15,13 @@ import java.util.List;
 public class GameRemote {
     private final List<GameLog> logs = Lists.newArrayList();
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
-    private final LegacyGame game = new LegacyGame(new PrintStream(out));
+    private final Game game;
+
+    public GameRemote() {
+        PrintStream out1 = new PrintStream(out);
+        game = new LegacyGame(out1);
+        //game = new RewrittenGame(out1);
+    }
 
     public void addPlayer(String playerName) {
         game.add(playerName);
