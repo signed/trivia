@@ -37,7 +37,7 @@ public class TestSandbox {
         try {
             ByteArrayOutputStream data = replaceSystemOut();
             invoker.runGame(random, aGame);
-            String consoleLog = restoreSystemOut(data);
+            String consoleLog = readOutput(data);
             return new GameLog(consoleLog);
         } finally {
             restoreOriginalSystemOut();
@@ -48,7 +48,7 @@ public class TestSandbox {
         System.setOut(originalSystemOut);
     }
 
-    private String restoreSystemOut(ByteArrayOutputStream data) {
+    private String readOutput(ByteArrayOutputStream data) {
         try {
             ByteArrayInputStream in = new ByteArrayInputStream(data.toByteArray());
             return CharStreams.toString(new InputStreamReader(in, "UTF-8"));
