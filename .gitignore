@@ -3,3 +3,5 @@
 # of that language. See Scala/.gitignore for
 # an example. Thanks.
 .DS_Store
+.idea/
+*.iml
