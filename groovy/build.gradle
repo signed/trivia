@@ -1,8 +1,35 @@
+plugins {
+    id 'groovy'
+}
 
-apply plugin: 'groovy'
+ext.junitVintageVersion  = '5.2.0'
+ext.junitPlatformVersion = '1.2.0'
+ext.junitJupiterVersion = '5.2.0'
+
+
+test {
+    useJUnitPlatform {
+        includeEngines 'junit-jupiter', 'junit-vintage'
+    }
+}
 
 repositories {
     mavenCentral()
+}
+
+dependencies {
+    testCompile('org.junit.jupiter:junit-jupiter-api:5.2.0')
+    testCompile('org.junit.jupiter:junit-jupiter-params:5.2.0')
+    testRuntime('org.junit.jupiter:junit-jupiter-engine:5.2.0')
+
+    testCompile("junit:junit:4.12")
+    testRuntime("org.junit.vintage:junit-vintage-engine:5.2.0") {
+        because 'allows JUnit 3 and JUnit 4 tests to run'
+    }
+
+    testRuntime("org.junit.platform:junit-platform-launcher:5.2.0") {
+        because 'allows tests to run from IDEs that bundle older version of launcher'
+    }
 }
 
 dependencies {
