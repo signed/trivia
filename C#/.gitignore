@@ -1,3 +1,7 @@
 # MS Visual Studio
 *.suo
 *.csproj.user
+
+# Rider / ReSharper
+.idea/
+*.sln.DotSettings.user
