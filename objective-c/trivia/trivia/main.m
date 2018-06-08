@@ -3,7 +3,8 @@
 int main(int argc, const char * argv[])
 {
     srand ( (int)time(NULL) );
-    
+    if(argc>1) srand(atoi(argv[1]));
+
     @autoreleasepool {
         BOOL notAWinner;
         
